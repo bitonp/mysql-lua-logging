@@ -43,9 +43,12 @@
 gDebug = true;
 nMaxQryLen = 500;
 sfifo      = "/var/log/mysql/proxy.out";
-
 --- Swap these around for remote
 local blocal = true
+
+sCurl      = "curl -XPOST 'http://[ES-SERVER]:9200/mysql/query_data/' -d '%s'"
+
+
 
 -- include files
 
@@ -115,7 +118,7 @@ function read_auth( )
                          srvname = oConnection.server.dst.name});
    nElem = table.getn(bitonConn);								-- returns last inserted   
    
-   oConn = tscConn[nElem];									-- Do what we want with it here
+   oConn = bitonConn[nElem];									-- Do what we want with it here
    return;
 end
 
@@ -148,11 +151,11 @@ end
 -- packet::sub(2)       -> Query itself 
 ------------------------------------------------------
 function read_query (packet)
-   local nqCount = table.getn(tscQuery);
+   local nqCount = table.getn(bitonQuery);
    local bresultset = false;
    -- Set the counter to one more
    nqCount = nqCount + 1;
-   table.insert(tscQuery, {
+   table.insert(bitonQuery, {
 				          id          = nqCount,	
 						  threadid    = proxy.connection.server.thread_id ,
 				          querytype   = packet:sub(1),
@@ -323,8 +326,6 @@ end
 -- Set up for ElasticSearch.. change for your output of choice
 -----------------------------------------------------------
 function sendQuery(opConn, opQuery)
-   local sCurl = "curl -XPOST 'http://[ES-SERVER]/mysql/query_data/' -d '%s'"
-
    local currIndex = proxy.connection.backend_ndx;
    local numQuery   = countQueries();
    local sttl = "1d"
@@ -362,9 +363,9 @@ function sendQuery(opConn, opQuery)
     local connBuff  = string.format('"current":"%d"',numQuery);
     local writebuff = string.format('{"@timestamp":"%s",%s,%s, %s}\n', getBaseTime(),serverBuff, buffer, connBuff);
     if(gDebug == true) then
-                hfifo:write(writebuff);
-                hfifo:flush();
-        end
+        hfifo:write(writebuff);
+        hfifo:flush();
+    end
     -- Now the Curl Call
     -- Need to add:
     -- 1. _id ??
