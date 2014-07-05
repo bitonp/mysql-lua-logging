@@ -32,7 +32,7 @@ Installation is relatively straight forward, if you follow the examples here.
 
 OS
 ==
-Built and tested on Ubuntu / Debian Linux (10 ... 13). Should also work on windows (if youo must) , but you are sort of
+Built and tested on Ubuntu / Debian Linux (10 ... 13). Should also work on windows (if you must) , but you are sort of
 on your own. I will help out where I can... but I am a Unix guys now. 
 
 Required Software (All server side)
@@ -50,13 +50,13 @@ Install Directories (suggested)
 1. lua files -> /usr/share/mysql-proxy
 2. bitonproxy.conf -> /etc/mysql-proxy
 3. If using ES, then you will need the mappings.sh script. This is simply a curl() call to be made on against your
-   ES server, dictating the types of teh data produced, for easy searching... and making sense of by Kibana or 
+   ES server, dictating the types of the data produced, for easy searching... and making sense of by Kibana or 
    graphing packages.
    
 Configuration
 =============
 1. If you have any major issues, it will be in mysql-proxy not picking up your library installation. To get around this,
-   once libua5.1 is installed, from the command line run the following:
+   once libua5.1 is installed, from the command line run the following:\n
       sh> /usr/bin/lua5.1 -e 'apr = require "apr"; print(apr.time_now()); env=getfenv(); print(env);for i,v in pairs(env.package) do print(i,v); end'
    This should prit out the current time in microtime, plus the path settings used to get them. If you have the microtime printed out, 
    then cut and paste the output into 'package.path' and 'package.cpath' around line 57-60 of biton_lua_hooks.lua.
