@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------------------------------
 -- biton_lua_hooks.lua
 -- Author: P.Colclough
--- Date  : 18 June 2012
+-- Date  : 18 June 2012 / 27 June 2014
 -- Homepage: https://www.linkedin.com/in/petercolclough
 --           https://github.com/bitonp/mysql-lua-logging
 -- License: MIT
