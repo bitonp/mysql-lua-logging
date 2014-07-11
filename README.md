@@ -48,7 +48,9 @@ All the above are open source.
 
 Install Directories (suggested)
 1. lua files -> /usr/share/mysql-proxy
+
 2. bitonproxy.conf -> /etc/mysql-proxy
+
 3. If using ES, then you will need the mappings.sh script. This is simply a curl() call to be made on against your
    ES server, dictating the types of the data produced, for easy searching... and making sense of by Kibana or 
    graphing packages.
