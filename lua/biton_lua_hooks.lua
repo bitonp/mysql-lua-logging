@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------------------------------
 -- biton_lua_hooks.lua
 -- Author: P.Colclough
--- Date  : 18 June 2012 / 27 June 2014
+-- Date  : 18 June 2012
 -- Homepage: https://www.linkedin.com/in/petercolclough
 --           https://github.com/bitonp/mysql-lua-logging
 -- License: MIT
@@ -43,12 +43,10 @@
 gDebug = true;
 nMaxQryLen = 500;
 sfifo      = "/var/log/mysql/proxy.out";
+
+
 --- Swap these around for remote
 local blocal = true
-
-sCurl      = "curl -XPOST 'http://[ES-SERVER]:9200/mysql/query_data/' -d '%s'"
-
-
 
 -- include files
 
@@ -72,6 +70,7 @@ local apr        = require("apr");
 
 -- global variables
 hfifo      = nil;
+sCurl      = "curl -XPOST 'http://awse-sl01:9200/mysql/query_data/' -d '%s'"
 -- variables
 local access_ndx = 0;
 local current_id = 1;
@@ -331,6 +330,7 @@ function sendQuery(opConn, opQuery)
    local sttl = "1d"
    local sQuery     = string.gsub(opQuery.query,"\n", " ");
    local stime = getDate();
+   local sCmd = '';
 
    nlen = string.len(sQuery);
    if(nlen > nMaxQryLen) then
@@ -372,9 +372,9 @@ function sendQuery(opConn, opQuery)
     -- 2. _ttl - Set to 24 Hours initially
     --------------------------------------- 
     sdate = getDate()
-    sCurl = string.format(sCurl,writebuff);
+    sCmd = string.format(sCurl,writebuff);
     if(gDebug == true) then
-                hfifo:write(sCurl);
+                hfifo:write(sCmd);
                 hfifo:flush();
         end
         os.execute(sCurl);
