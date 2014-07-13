@@ -5,7 +5,8 @@ Logging Scripts and methods for MySql using mysql-proxy and custom Lua scripts. 
 Peter Colclough (biton@compuserve.com). Please read the License information in this repo for more information.
 
 * With thanks to Pete Rodding (http://peterodding.com/code/lua/apr) for his contribution and help with hos Lua-Apr 
-(Apache Portable Runtime) binding for Lua, without which microsend timing would not be possible *
+(Apache Portable Runtime) binding for Lua, without which microsend timing would not be possible, and importantly
+Jan Kneschke (http://jan.kneschke.de/about/) the original constructor of mysql-proxy, and current maintainer still. *
 
 Introduction
 ============
