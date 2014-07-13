@@ -4,19 +4,19 @@ mysql-lua-logging
 Logging Scripts and methods for MySql using mysql-proxy and custom Lua scripts. Issued under MIT License by
 Peter Colclough (biton@compuserve.com). Please read the License information in this repo for more information.
 
-* With thanks to Pete Rodding (http://peterodding.com/code/lua/apr) for his contribution and help with hos Lua-Apr 
-(Apache Portable Runtime) binding for Lua, without which microsend timing would not be possible, and importantly
+* With thanks to Pete Rodding (http://peterodding.com/code/lua/apr) for his contribution and help with his Lua-Apr 
+(Apache Portable Runtime) binding for Lua, without which microsecond timing would not be possible, and importantly
 Jan Kneschke (http://jan.kneschke.de/about/) the original constructor of mysql-proxy, and current maintainer still. *
 
 Introduction
 ============
-This extension to mysql-proxy allows all teh timming information to be taken from your server, and passed to the 
+This extension to mysql-proxy allows all the timing information to be taken from your server, and passed to the 
 output of your choice. This particular version makes a Curl call to an ElasticSearch Engine, which is then read
 by Kibana for graphs, tables and all things interesting. A blog on this will follow...
 
-The simple (ha!) concept behind ths was finding a way to log all queries that happen on a server, or group of servers, 
+The simple (ha!) concept behind this was finding a way to log all queries that happen on a server, or group of servers, 
 to discover usage, issues, and all queries that need optimisation. It grew out of a need of spending a couple of years
-optimising queries for a client, and discovering that it wa the 'things we cant see' causing an issue. The Higgs Bosun
+optimising queries for a client, and discovering that it was the 'things we cant see' causing an issue. The Higgs Bosun
 of databases.
 However, we also had the issue that any recording _must not_ interfere with current database operation. Thats a tall order.
 
