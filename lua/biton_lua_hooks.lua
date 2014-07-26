@@ -40,7 +40,8 @@
 
 -- global changes
 -- config options
-gDebug = true;
+-- Change gDebug = true to get file dumps
+gDebug = false;
 nMaxQryLen = 500;
 sfifo      = "/var/log/mysql/proxy.out";
 
@@ -65,12 +66,13 @@ end
 -- local requires
 local biton      = require("bitonstructs");
 local apr        = require("apr");
+local ES_Server  = "";            -- The ES Server you are curl calling to. 
 -- objects
 -- Tables
 
 -- global variables
 hfifo      = nil;
-sCurl      = "curl -XPOST 'http://awse-sl01:9200/mysql/query_data/' -d '%s'"
+sCurl      = "curl -XPOST 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
 -- variables
 local access_ndx = 0;
 local current_id = 1;
@@ -377,7 +379,7 @@ function sendQuery(opConn, opQuery)
                 hfifo:write(sCmd);
                 hfifo:flush();
         end
-        os.execute(sCurl);
+        os.execute(sCmd);
     return;
 end
 
