@@ -8,8 +8,7 @@ curl -XPOST http://[MY_ES_SERVER]:9200/mysql/ -d '{
     "mappings" : {
  	"_default_":{
             "_ttl" : {"enabled":true, "default":"2d"},
-	    "@timestamp" : {"type" : "date"} 
-         },
+	 },
         "mysql" : {
 	    "properties" : {
  	        "Server":{"type":"string"},
@@ -27,7 +26,8 @@ curl -XPOST http://[MY_ES_SERVER]:9200/mysql/ -d '{
                 "responseTime":{"type":"string"},
                 "timeReceived":{"type":"string"},
                 "lockoutTime":{"type":"string"},
-                "current":{"type":"long"}
+                "current":{"type":"long"},
+                "@timestamp":{"type":"date"}
             }
         }
     }
