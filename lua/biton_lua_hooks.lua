@@ -66,13 +66,14 @@ end
 -- local requires
 local biton      = require("bitonstructs");
 local apr        = require("apr");
-local ES_Server  = "";            -- The ES Server you are curl calling to. 
+local ES_Server  = "";            -- The ES Server you are curl calling to.
+local nCurlTimeout = 2;           -- The Curl Timeout
 -- objects
 -- Tables
 
 -- global variables
 hfifo      = nil;
-sCurl      = "curl -XPOST 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
+sCurl      = "curl -XPOST --connect-timeout %s 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
 -- variables
 local access_ndx = 0;
 local current_id = 1;
@@ -374,7 +375,7 @@ function sendQuery(opConn, opQuery)
     -- 2. _ttl - Set to 24 Hours initially
     --------------------------------------- 
     sdate = getDate()
-    sCmd = string.format(sCurl,writebuff);
+    sCmd = string.format(sCurl,nCurlTimeout,writebuff);
     if(gDebug == true) then
                 hfifo:write(sCmd);
                 hfifo:flush();
