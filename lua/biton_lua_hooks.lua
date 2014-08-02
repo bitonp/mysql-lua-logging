@@ -342,7 +342,7 @@ function sendQuery(opConn, opQuery)
    sQuery           = string.gsub(sQuery,'\\', '\\\\');
    -- sQuery           = string.gsub(sQuery,"'", "''");
    sQuery           = string.gsub(sQuery,'"', '\\"');
-   local buffer = string.format('"Server":"%s","User":"%s", "proxyName":"%s","server_version":"%s","Client":"%s","Thread":"%s","QueryLen":%s,"Query":"%s","QueryType":%s,"timeSent":"%f","timeReceived":"%f","queryTime":"%f","responseTime":"%f","lockoutTime":"%f"',
+   local buffer = string.format('"Server":"%s","User":"%s", "proxyName":"%s","server_version":"%s","Client":"%s","Thread":"%s","QueryLen":%s,"Query":"%s","QueryType":%s,"timeSent":%f,"timeReceived":%f,"queryTime":%f,"responseTime":%f,"lockoutTime":%f',
                                 opConn.srvname,
                                 opConn.user,
                                 opConn.proxyname,
