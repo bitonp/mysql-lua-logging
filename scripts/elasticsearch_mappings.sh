@@ -21,11 +21,11 @@ curl -XPOST http://[MY_ES_SERVER]:9200/mysql/ -d '{
 	        "QueryLen":{"type":"long"},
                 "Query":{"type":"string"},
                 "QueryType":{"type":"long"},
-                "timeSent":{"type":"string"},
-                "queryTime":{"type":"string"},
-                "responseTime":{"type":"string"},
-                "timeReceived":{"type":"string"},
-                "lockoutTime":{"type":"string"},
+                "timeSent":{"type":"double"},
+                "queryTime":{"type":"double"},
+                "responseTime":{"type":"double"},
+                "timeReceived":{"type":"double"},
+                "lockoutTime":{"type":"double"},
                 "current":{"type":"long"},
                 "@timestamp":{"type":"date"}
             }
