@@ -42,12 +42,12 @@
 -- config options
 -- Change gDebug = true to get file dumps
 gDebug = false;
-nMaxQryLen = 500;
+nMaxQryLen = 1000;
 sfifo      = "/var/log/mysql/proxy.out";
 
 
 --- Swap these around for remote
-local blocal = true
+local blocal = false
 
 -- include files
 
