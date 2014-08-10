@@ -7,7 +7,7 @@ curl -XPOST http://[MY_ES_SERVER]:9200/mysql/ -d '{
     },
     "mappings" : {
  	"_default_":{
-            "_ttl" : {"enabled":true, "default":"2d"},
+            "_ttl" : {"enabled":true, "default":"4d"},
 	 },
         "mysql" : {
 	    "properties" : {
