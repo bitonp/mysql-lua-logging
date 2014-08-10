@@ -73,7 +73,7 @@ local nCurlTimeout = 2;           -- The Curl Timeout
 
 -- global variables
 hfifo      = nil;
-sCurl      = "curl -XPOST --connect-timeout %s 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
+sCurl      = "curl -XPOST -g --connect-timeout %s 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
 -- variables
 local access_ndx = 0;
 local current_id = 1;
@@ -340,9 +340,21 @@ function sendQuery(opConn, opQuery)
           sQuery = string.sub(sQuery, 1,nMaxQryLen)..'...'..string.sub(sQuery, nlen - 10, nlen);
    end
 
+  --------------------------------------------------------
+   -- Replace \n with ' ' and \t with ' '
+   --------------------------------------------------------
+   sQuery           = string.gsub(sQuery, '\n',' ');
+   sQuery           = string.gsub(sQuery, '\t',' ');
    sQuery           = string.gsub(sQuery,'\\', '\\\\');
-   -- sQuery           = string.gsub(sQuery,"'", "''");
+   sQuery           = string.gsub(sQuery,"'", "''");
    sQuery           = string.gsub(sQuery,'"', '\\"');
+   --------------------------------------------------------
+   -- Help with weird timer issue
+   --------------------------------------------------------
+   if(opQuery.lockouttime < 0) then
+      opQuery.lockouttime = 0;
+   end
+   
    local buffer = string.format('"Server":"%s","User":"%s", "proxyName":"%s","server_version":"%s","Client":"%s","Thread":"%s","QueryLen":%s,"Query":"%s","QueryType":%s,"timeSent":%f,"timeReceived":%f,"queryTime":%f,"responseTime":%f,"lockoutTime":%f',
                                 opConn.srvname,
                                 opConn.user,
