@@ -14,7 +14,12 @@ This extension to mysql-proxy allows all the timing information to be taken from
 output of your choice. This particular version makes a Curl call to an ElasticSearch Engine, which is then read
 by Kibana for graphs, tables and all things interesting. A blog on this will follow...
 
-The simple (ha!) concept behind this was finding a way to log all queries that happen on a server, or group of servers, 
+31/8/2014 - Minor amendment. You can either use Curl, or output to a log file (bitonproxy.out), and allow
+            logstash, or similar, to pick that up and dump to ES. Curl was found to be too slow in a production
+            environment. Further work will be done to build a direct TCP link, or use an asynch process for this. 
+            Logstash is good, but may have issues with grabbing all data cleanly.. but hey..Rime wasn't built in a day 
+
+The simple (ha!) concept behind this was finding a way to log  all queries that happen on a server, or group of servers, 
 to discover usage, issues, and all queries that need optimisation. It grew out of a need of spending a couple of years
 optimising queries for a client, and discovering that it was the 'things we cant see' causing an issue. The Higgs Bosun
 of databases.
@@ -44,6 +49,7 @@ Required Software (All server side)
 3. liblua5.1             http://peterodding.com/code/lua/apr
                          - Debian: sudo apt-get install liblua5.1-apr1
 4. APR (Apache Portable Runtime) https://apr.apache.org/download.cgi
+5. Logstash.. for thos that want to use the file output version
 
 All the above are open source.
 
@@ -51,6 +57,7 @@ Install Directories (suggested)
 1. lua files -> /usr/share/mysql-proxy
 
 2. bitonproxy.conf -> /etc/mysql-proxy
+   bitonlog.conf   -> /etc/logstash
 
 3. If using ES, then you will need the mappings.sh script. This is simply a curl() call to be made on against your
    ES server, dictating the types of the data produced, for easy searching... and making sense of by Kibana or 
@@ -85,6 +92,7 @@ Configuration
                            recorded. I found a client with 30k+ queries... thats not fun :-).
         local blocal=true  I have 2 configuration options for testing local and remote. This allows for easy swapping 
                            between the two.
+        bCurl              false (default) logs to file, true uses the curl option
     c) sCurl      = "curl -XPOST 'http://[ES-SERVER]:9200/mysql/query_data/' -d '%s'"
                            This is the template curl call to ES. If you aren't writing to ES yoou can ignore this. If youo are 
                            writing to something like RabbitMQ, then you can change this. If you are simply writing to 
@@ -101,7 +109,8 @@ Configuration
     run the elasticsearch_mappings.sh file to set the mappings.
     
     If you aren't ... move on to (6).
-  
+    -- If using logstash to add the file.. get logstash loaded and working
+    
  6. Make sure that your user has the correct Database rights to connect from your proxy server. If your proxy server is:
             100.2.3.4 and user = 'mydbuser'
     then the users will be 'mydbuser'@'100.2.3.4' 
@@ -115,7 +124,7 @@ Configuration
             my_proxy_server:4040         NOT
             my_db_server:3306            that you usually use.
             
-  That should be it. If it isn't, please let me know.... if it is and it us working for you... please let me know... 
+  That should be it. If it isn't, please let me know.... if it is and it is working for you... please let me know... 
   if you are having issues.. please let me know (attention seeker that I am).. happy logging.
                      
   

@@ -37,19 +37,27 @@
 --
 -- functions               findConnection - Find a Connection based on thread id
 --                         killConnection - Set a connection to nil
+--
+-- Global Tables           bitonCurl      - Table of Curl Commands to run. 
 --------------------------------------------------------------------------------------------------------
 
 -- global vars
 bitonConn    = {};
 bitonQuery   = {};
-
-
+bitonCurl    = {};
 -- local vars
-
-
-
 -- methods/functions... call it what you will
-
+function addtable(spElem, spTable)
+   if(spTable == nil) then
+    nElem = 0;
+   else
+    nElem = table.getn(spTable);
+   end
+   nElem = nElem+1;
+   table.setn(spTable, nElem);
+   table.insert(spTable, nElem, spElem);
+   return nElem;
+end
 --------------------------------------------------------------------------------------------------------
 -- findConnection 
 -- Description: Find connection by threadid
@@ -153,3 +161,4 @@ function countQueries()
      end 
      return nC;
 end
+
