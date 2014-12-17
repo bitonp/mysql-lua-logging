@@ -12,7 +12,7 @@ Introduction
 ============
 This extension to mysql-proxy allows all the timing information to be taken from your server, and passed to the 
 output of your choice. This particular version makes a Curl call to an ElasticSearch Engine, which is then read
-by Kibana for graphs, tables and all things interesting. A blog on this will follow...
+by Kibana for graphs, tables and all things interesting. A blog on this will follow...(http://woodygsd.blogspot.co.uk/2014/07/how-do-you-log-problem-like-mysql.html)
 
 31/8/2014 - Minor amendment. You can either use Curl, or output to a log file (bitonproxy.out), and allow
             logstash, or similar, to pick that up and dump to ES. Curl was found to be too slow in a production
