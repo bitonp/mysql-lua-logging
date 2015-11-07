@@ -17,7 +17,7 @@ by Kibana for graphs, tables and all things interesting. A blog on this will fol
 31/8/2014 - Minor amendment. You can either use Curl, or output to a log file (bitonproxy.out), and allow
             logstash, or similar, to pick that up and dump to ES. Curl was found to be too slow in a production
             environment. Further work will be done to build a direct TCP link, or use an asynch process for this. 
-            Logstash is good, but may have issues with grabbing all data cleanly.. but hey..Rime wasn't built in a day 
+            Logstash is good, but may have issues with grabbing all data cleanly.. but hey..Rome wasn't built in a day 
 
 The simple (ha!) concept behind this was finding a way to log  all queries that happen on a server, or group of servers, 
 to discover usage, issues, and all queries that need optimisation. It grew out of a need of spending a couple of years
@@ -25,7 +25,7 @@ optimising queries for a client, and discovering that it was the 'things we cant
 of databases.
 However, we also had the issue that any recording _must not_ interfere with current database operation. Thats a tall order.
 
-By using mysql-proxy with these two lua scripts, we are able to pipe the query information, via curl(), to a completely
+By using mysql-proxy with these two lua scripts, we are able to pipe the query information, via curl() or a log file, to a completely
 seperate cluster of machines running ElasticSearch. This very small increment in time is negated completely by the removal 
 of the need to log slow-logs, and garner them, on the database server. Your logs then also end up in a search engine,
 which makes for a much better way of finding queries/tables/columns, than grepping through reams of logs that may not 
