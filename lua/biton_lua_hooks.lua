@@ -41,9 +41,10 @@
 -- global changes
 -- config options
 -- Change gDebug = true to get file dumps
-gDebug = false;
-nMaxQryLen = 1000;
-sfifo      = "/var/log/mysql/bitonproxy.out";
+gDebug     = false;
+sdebug     = "var/log/mysql/bitondebug.log";
+nMaxQryLen = 1000;  -- Max lengthh of query to write
+sfifo      = "/var/log/mysql/bitonproxy.out";  -- Location of output file
 
 
 --- Swap these around for remote
@@ -66,14 +67,15 @@ end
 -- local requires
 local biton      = require("bitonstructs");
 local apr        = require("apr");
-local ES_Server  = "awse-devmysqlproxy01";            -- The ES Server you are curl calling to.
+local ES_Server  = "[YOUR-ES-SERVER]";            -- The ES Server you are curl calling to... for curl option
 local nCurlTimeout = 2;           -- The Curl Timeout
 -- objects
 -- Tables
 
 -- global variables
-hfifo      = nil;
-sCurl      = "curl -XPOST -g --connect-timeout %s 'http://"..ES_Server..":9200/mysql/query_data/' -d '%s'"
+hfifo      = nil;         -- output file handle
+hdebug     = nil;         -- debug file handle
+sCurl      = "curl -XPOST -g --connect-timeout %s 'http://"..ES_Server..":9200/[ES-INDEX]/[ES-TYPE]/' -d '%s'"
 bCurl      = false;        // Set to true for Curl call, or False for a Log output.. then logstash (or similar)
 -- variables
 
@@ -88,8 +90,15 @@ local secdiv     = 1000000;
 -- Notes: No data to use at this point... goto read_handshake()
 ------------------------------------------------------
 function connect_server()
-    if(hfifo == nil) then
-       hfifo = io.open(sfifo, "w");
+    if(proxy.global.hfifo == nil) then
+       proxy.global.hfifo = io.open(sfifo, "a");
+    end
+    hfifo = proxy.global.hfifo;
+    if(gDebug == true) then
+       if (proxy.global.hdebug == nil) then 
+          proxy.global.hdebug = io.open(sdebug, "a");
+       end
+       hdebug = proxy.global.hdebug;
     end
 end
 
@@ -386,8 +395,8 @@ function sendQuery(opConn, opQuery)
     else writebuff = string.format('{"timestamp":"%s",%s,%s, %s}\n', getBaseTime(),serverBuff, buffer, connBuff);
     
     if(gDebug == true) then
-        hfifo:write(writebuff);
-        hfifo:flush();
+        hdebug:write(writebuff);
+        hdebug:flush();
     end
     -- Now the Curl Call
     -- Need to add:
@@ -397,8 +406,8 @@ function sendQuery(opConn, opQuery)
     sdate = getDate()
     sCmd = string.format(sCurl,nCurlTimeout,writebuff);
     if(gDebug == true) then
-      hfifo:write(sCmd);
-      hfifo:flush();
+      hdebug:write(sCmd);
+      hdebug:flush();
     end
     ---------------------------------------
     -- To do things with ES:
