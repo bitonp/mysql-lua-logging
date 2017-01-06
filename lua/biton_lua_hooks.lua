@@ -353,11 +353,6 @@ function sendQuery(opConn, opQuery)
    --------------------------------------------------------
    -- Replace \n with ' ' and \t with ' '
    --------------------------------------------------------
-   --sQuery           = string.gsub(sQuery, '\n',' ');
-   --sQuery           = string.gsub(sQuery, '\t',' ');
-   --sQuery           = string.gsub(sQuery,'\\', '\\\\');
-   --sQuery           = string.gsub(sQuery,"'", "''");
-   --sQuery           = string.gsub(sQuery,'"', '\\"');
    sQuery             = escape(sQuery);
    --------------------------------------------------------
    -- Help with weird timer issue
@@ -430,8 +425,17 @@ end
 -- authored: http://snippets.luacode.org/?p=snippets/Escape_magic_characters_in_a_string_4
 -----------------------------------------------------------------------
 function escape(s)
-  return (s:gsub('[%-%.%+%[%]%(%)%$%^%%%?%*]','%%%1'):gsub('%z','%%z'))
+  ---------------------------
+  -- First get rid of <cr/lf> and <tab>
+  -- Then escape / and " to create valid json
+  -- Also replace null characters (%z in lua) with the string ' ;NULL; '
+  -- NOTE: \ is the escape char, so to have \ in a string you must put \\
+  ---------------------------
+  subst_collapse_spaces = '[\t\n\r ]+'
+  subst_escape_json_special_chars = '["\\]'
+  return (s:gsub(subst_collapse_spaces,' '):gsub(subst_escape_json_special_chars,'\\\%1'):gsub('%z',' ;NULL; '));
 end
+
 
 -----------------------------------------------------------------------
 -- Co Routine Processes for the curl calls
